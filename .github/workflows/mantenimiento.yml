@@ -1,0 +1,12 @@
+name: mantenimiento
+on:
+  schedule:
+    - cron: "0 7 * * *"      # limpieza diaria (UTC)
+  workflow_dispatch:
+jobs:
+  limpieza:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -fsS --retry 5 --retry-delay 20 -X POST "${{ secrets.BACKEND_URL }}/cron/limpieza" \
+            -H "X-Cron-Secret: ${{ secrets.CRON_SECRET }}"
